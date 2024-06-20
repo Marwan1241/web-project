@@ -1,0 +1,142 @@
+@media screen and (max-width: 768px) {
+  .btn:not(.btn-hover-alt, .link-btn) {
+    display: none;
+  }
+
+  .nav-drawer-flex {
+    & .MuiListItemText-primary {
+      margin-bottom: -30px;
+    }
+
+    & .MuiTypography-h2 {
+      font-size: 3rem;
+      margin-top: 3rem;
+    }
+
+    & .drawer-social-media {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+    }
+  }
+
+  .hero-container {
+    padding: 0 5px;
+    height: 40vh;
+  }
+
+  .hero-container .hero-text {
+    width: 70%;
+    font-size: 1rem;
+    letter-spacing: 1.5px;
+    text-align: center;
+  }
+
+  .client-section .client-section-text {
+    width: 100%;
+  }
+
+  .client-section .client-title {
+    font-size: 2rem;
+  }
+
+  .client-list {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    justify-items: center;
+    gap: 5px;
+  }
+
+  .client-list .client-item {
+    width: 80px;
+  }
+
+  /* .numbers-list .numbers-item */
+  .numbers-list .numbers-item {
+    justify-content: space-between;
+    gap: 0;
+  }
+
+  /* .people-section */
+  .people-section {
+    flex-direction: column;
+
+    & .team-info-container {
+      display: none;
+    }
+
+    & .people-list {
+      margin: 0;
+    }
+
+    & .people-item {
+      padding: 10px 0;
+      margin: 10px;
+
+      & h5 {
+        font-size: 1.5rem;
+      }
+
+      & p {
+        font-size: 0.6rem;
+      }
+    }
+  }
+
+  .service-item {
+    flex-direction: column !important;
+  }
+
+  .desktop-teamPhoto {
+    display: none;
+  }
+
+  .mobile-teamPhoto {
+    display: block;
+  }
+
+  .slick-slide div {
+    padding: 10px;
+  }
+
+  .slick-slide > div {
+    padding: 0;
+    padding: 0 15px 0 15px;
+    height: 100%;
+  }
+
+  .testimonial-card .testimonial-comment {
+    font-size: 16px;
+  }
+
+  .iftar-form .locationCapture {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .iftar-form .locationCapture button {
+    width: 99%;
+    font-size: 12px;
+  }
+
+  .event-page .event-title {
+    font-size: 3rem;
+  }
+
+  .event-page .event-location,
+  .event-page .event-date {
+    font-size: 16px;
+  }
+
+  .event-page .event-info-container {
+    gap: 50px;
+    flex-direction: column;
+  }
+
+  .gff-teaser-container {
+    background-image: url("/assets/gff-mobile.webp");
+  }
+
+  .gff-teaser-text {
+    font-size: 4.5rem !important;
+  }
+}

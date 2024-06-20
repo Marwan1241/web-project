@@ -1,0 +1,15 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /login/
+Disallow: /signup/
+Disallow: /reset-password/
+Disallow: /404/  # Assuming this page is for handling 404 errors
+Disallow: /error/  # Assuming this page is for handling general errors
+Disallow: /api/  # If you have any API endpoints you want to keep private
+Disallow: /private-route/  # If you have any routes that should not be crawled
+
+# Allow crawling of everything else
+Allow: /
+
+# Sitemap
+Sitemap: /sitemap.xml
