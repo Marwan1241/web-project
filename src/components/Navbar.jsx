@@ -12,6 +12,7 @@ import Stack from "@mui/material/Stack";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import YouTubeIcon from "@mui/icons-material/YouTube";
+import PersonIcon from "@mui/icons-material/Person";
 
 const logoUrl = process.env.PUBLIC_URL + "/assets/young-logo-white.webp";
 
@@ -83,6 +84,10 @@ export default function ButtonAppBar() {
           </Link>
 
           <Box>
+            <Link to="/sign-up">
+              <button className="btn btn-primary">Sign Up</button>
+            </Link>
+
             <Link to="/contact">
               <button className="btn btn-primary">START A PROJECT</button>
             </Link>

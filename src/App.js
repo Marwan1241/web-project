@@ -18,6 +18,7 @@ import EventPage from "./components/EventPage";
 import NotFound from "./components/NotFound";
 import Admin from "./components/admin-panel/Admin";
 import CareersFormPage from "./components/CareersFormPage";
+import SignUp from "./components/SignUp";
 
 //Scroll to top when navigating a new page
 function ScrollToTop() {
@@ -51,7 +52,9 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/iftar" element={<IftarForm />} />
           <Route path="/event/:eventId" element={<EventPage />} />
+          <Route path="/sign-up" element={<SignUp />} />
           <Route path="/admin/*" element={<Admin />} />
+
           <Route
             path="/careers-form/:positionTitle"
             element={<CareersFormPage />}
