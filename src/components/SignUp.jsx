@@ -1,21 +1,36 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Hero from "./Hero";
+import "./SignUp.css"; // Ensure you create this CSS file for styling
 
 const SignUp = () => {
+  const [companyName, setCompanyName] = useState("");
+  const [companyLogo, setCompanyLogo] = useState(null);
+  const [companyAddress, setCompanyAddress] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("companyName", companyName);
+    formData.append("companyLogo", companyLogo);
+    formData.append("companyAddress", companyAddress);
+    formData.append("contactNumber", contactNumber);
+    formData.append("email", email);
+    formData.append("username", username);
+    formData.append("password", password);
+
     try {
-      const response = await axios.post("http://localhost:5000/users", {
-        username,
-        password,
-        id: Date.now().toString(),
+      const response = await axios.post("http://localhost:5000/companies", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
-      console.log("User created successfully", response.data);
+      console.log("Company profile created successfully", response.data);
     } catch (error) {
       console.error("Error signing up", error);
       setError("Error signing up");
@@ -23,16 +38,61 @@ const SignUp = () => {
   };
 
   return (
-    <div>
+    <div className="signup-container">
       <Hero text="Sign Up" />
       <h2>Sign Up</h2>
-      <form onSubmit={handleSignUp}>
+      <form onSubmit={handleSignUp} className="signup-form">
+        <div>
+          <label>Company Name:</label>
+          <input
+            type="text"
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Company Logo:</label>
+          <input
+            type="file"
+            onChange={(e) => setCompanyLogo(e.target.files[0])}
+            required
+          />
+        </div>
+        <div>
+          <label>Company Address:</label>
+          <input
+            type="text"
+            value={companyAddress}
+            onChange={(e) => setCompanyAddress(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Contact Number:</label>
+          <input
+            type="text"
+            value={contactNumber}
+            onChange={(e) => setContactNumber(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
         <div>
           <label>Username:</label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -41,9 +101,10 @@ const SignUp = () => {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
-        {error && <p>{error}</p>}
+        {error && <p className="error">{error}</p>}
         <button type="submit">Sign Up</button>
       </form>
     </div>
