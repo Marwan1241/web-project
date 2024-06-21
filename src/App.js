@@ -20,6 +20,7 @@ import Admin from "./components/admin-panel/Admin";
 import CareersFormPage from "./components/CareersFormPage";
 import SignUp from "./components/SignUp";
 import Login from "./components/Login";
+import Logout from "./components/Logout";
 
 //Scroll to top when navigating a new page
 function ScrollToTop() {
@@ -56,6 +57,7 @@ function App() {
           <Route path="/admin/*" element={<Admin />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
 
           <Route
             path="/careers-form/:positionTitle"

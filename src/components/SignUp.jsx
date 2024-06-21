@@ -12,7 +12,7 @@ const SignUp = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Get the navigate function from useNavigate
+  const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -31,7 +31,8 @@ const SignUp = () => {
         "http://localhost:5000/users",
         userData
       );
-      navigate("/login");
+      localStorage.setItem("user", JSON.stringify(response.data));
+      navigate("/");
       console.log("Company profile created successfully", response.data);
     } catch (error) {
       console.error("Error signing up", error);

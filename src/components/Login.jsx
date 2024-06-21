@@ -20,6 +20,7 @@ const Login = () => {
       );
       if (user) {
         console.log("Login successful");
+        localStorage.setItem("user", JSON.stringify(user));
         navigate("/");
       } else {
         setError("Invalid username or password");
