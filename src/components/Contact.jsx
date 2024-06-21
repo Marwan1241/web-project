@@ -9,8 +9,7 @@ import { Typography } from "@mui/material";
 import Testimonials from "./Testimonials";
 
 const teamPhoto = process.env.PUBLIC_URL + "/assets/Team-Photo-1.webp";
-const teamPhotoResponsive =
-  process.env.PUBLIC_URL + "/assets/Team-Photo-Mobile.webp";
+const teamPhotoResponsive = process.env.PUBLIC_URL + "/assets/Team-Photo-Mobile.webp";
 
 const formStyle = {
   margin: "10px 0",
@@ -33,14 +32,13 @@ function Contact() {
   const [meetingDateTime, setMeetingDateTime] = useState("");
   const [description, setDescription] = useState("");
   const [hearing, setHearing] = useState("");
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    companyName: "",
-    phoneNumber: "",
-  });
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [emailError, setEmailError] = useState(false);
 
   const chipOptionsType = [
     "Commercial",
@@ -56,238 +54,251 @@ function Contact() {
     "Graphic Design",
     "Other",
   ];
+
+  const chipOptionsBudget = [
+    "$1,000 - $5,000",
+    "$5,000 - $10,000",
+    "$10,000 - $50,000",
+    "$50,000 - $100,000",
+    "$100,000+",
+  ];
+
   const handleChipClick = (type, value) => {
     switch (type) {
       case "type":
         setSelectedType(value);
+        break;
+      case "budget":
+        setSelectedBudget(value);
         break;
       default:
         break;
     }
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    let newValue = value;
+
+    if (name === "firstName" || name === "lastName") {
+      // Allow only letters for first name and last name
+      newValue = value.replace(/[^a-zA-Z]/g, "");
+    } else if (name === "phoneNumber") {
+      // Allow only numbers for phone number
+      newValue = value.replace(/[^0-9]/g, "");
+    }
+
+    switch (name) {
+      case "firstName":
+        setFirstName(newValue);
+        break;
+      case "lastName":
+        setLastName(newValue);
+        break;
+      case "email":
+        setEmail(newValue);
+        setEmailError(!validateEmail(newValue));
+        break;
+      case "companyName":
+        setCompanyName(newValue);
+        break;
+      case "phoneNumber":
+        setPhoneNumber(newValue);
+        break;
+      case "description":
+        setDescription(newValue);
+        break;
+      case "hearing":
+        setHearing(newValue);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateEmail(email)) {
+      setEmailError(true);
+      return;
+    }
     try {
       const response = await axios.post(
-        "https://youngproductions-768ada043db3.herokuapp.com/api/contactForm",
+        "https://youngproductions-768ada043db3.herokuapp.com/api/contact",
         {
-          ...formData,
           selectedType,
           selectedBudget,
           selectedDate,
           meetingDateTime,
           description,
           hearing,
+          firstName,
+          lastName,
+          email,
+          companyName,
+          phoneNumber,
         }
       );
       setSubmitted(true);
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        companyName: "",
-        phoneNumber: "",
-      });
-      setSelectedType("");
-      setSelectedBudget("");
-      setSelectedDate("");
-      setMeetingDateTime("");
-      setDescription("");
-      setHearing("");
-
-      setTimeout(() => {
-        setSubmitted(false);
-      }, 1000);
+      console.log("Form submitted successfully:", response.data);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   return (
     <>
       <Hero
-        text="So you want to know more?"
-        highlightText=" Sweet. Same here!"
-        bgColor="white"
-        textColor="black"
+        imgSrc={teamPhoto}
+        imgSrcResponsive={teamPhotoResponsive}
+        heading="Let's work together"
+        text="We’d love to hear about what you’re working on and how we can help."
       />
 
-      <Box className="team-photo" sx={{ padding: "0 50px" }}>
-        <img src={teamPhoto} alt="team" className="desktop-teamPhoto" />
-        <img
-          src={teamPhotoResponsive}
-          alt="team"
-          style={{ width: "100%" }}
-          className="mobile-teamPhoto"
-        />
-      </Box>
-      <Typography
-        variant="h5"
-        sx={{ fontFamily: "Formula Bold" }}
-        className="contact-form-header"
+      <Box
+        component="form"
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+        sx={{
+          width: "100%",
+          maxWidth: "600px",
+          margin: "0 auto",
+          padding: "20px",
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+          borderRadius: "8px",
+          backgroundColor: "#fff",
+        }}
       >
-        Tell us everything about your project and we’ll get back to you once the
-        bell rings. 🔔
-      </Typography>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Contact Us
+        </Typography>
 
-      <Box className="contact-form">
-        <form onSubmit={handleSubmit}>
-          <div>
-            <Typography variant="h3" sx={{ fontFamily: "Formula Bold" }}>
-              Brief us of what you need
-            </Typography>
-            {chipOptionsType.map((option) => (
-              <Chip
-                key={option}
-                label={option}
-                value={selectedType}
-                onChange={(e) => setSelectedType(e.target.value)}
-                onClick={() => handleChipClick("type", option)}
-                onTouchStart={() => handleChipClick("type", option)}
-                color={selectedType === option ? "primary" : "default"}
-                sx={{
-                  margin: "5px",
-                  backgroundColor:
-                    selectedType === option ? "#db4a41 !important" : null,
-                  color: selectedType === option ? "white" : null,
-                }}
-              />
-            ))}
-          </div>
+        <TextField
+          label="First Name"
+          name="firstName"
+          value={firstName}
+          onChange={handleInputChange}
+          fullWidth
+          sx={formStyle}
+        />
+        <TextField
+          label="Last Name"
+          name="lastName"
+          value={lastName}
+          onChange={handleInputChange}
+          fullWidth
+          sx={formStyle}
+        />
+        <TextField
+          label="Company Name"
+          name="companyName"
+          value={companyName}
+          onChange={handleInputChange}
+          fullWidth
+          sx={formStyle}
+        />
+        <TextField
+          label="Phone Number"
+          name="phoneNumber"
+          value={phoneNumber}
+          onChange={handleInputChange}
+          fullWidth
+          sx={formStyle}
+        />
+        <TextField
+          label="Preferred Date"
+          name="preferredDate"
+          type="date"
+          value={selectedDate}
+          onChange={(e) => setSelectedDate(e.target.value)}
+          fullWidth
+          sx={formStyle}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <TextField
+          label="Email"
+          name="email"
+          value={email}
+          onChange={handleInputChange}
+          fullWidth
+          sx={formStyle}
+          error={emailError}
+          helperText={emailError ? "Please enter a valid email address" : ""}
+        />
+        <TextField
+          label="Description"
+          name="description"
+          multiline
+          rows={4}
+          value={description}
+          onChange={handleInputChange}
+          fullWidth
+          sx={formStyle}
+        />
+        <TextField
+          label="How did you hear about us"
+          name="hearing"
+          value={hearing}
+          onChange={handleInputChange}
+          fullWidth
+          sx={formStyle}
+          select
+        >
+          <MenuItem value="Social Media">Social Media</MenuItem>
+          <MenuItem value="Friend">From a friend</MenuItem>
+          <MenuItem value="Event">Saw us in an event</MenuItem>
+        </TextField>
 
-          <div>
-            <Typography variant="h3" sx={{ fontFamily: "Formula Bold" }}>
-              Project Budget (EGP)
-            </Typography>
-            <TextField
-              label="Enter budget (EGP)"
-              variant="outlined"
-              fullWidth
-              type="number"
-              value={selectedBudget}
-              onChange={(e) => setSelectedBudget(e.target.value)}
-              sx={formStyle}
-            />
-          </div>
-
-          <div>
-            <Typography variant="h3" sx={{ fontFamily: "Formula Bold" }}>
-              Project Delivery Date
-            </Typography>
-            <TextField
-              label="Select Delivery Date"
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              sx={formStyle}
-              InputLabelProps={{
-                shrink: true,
+        <Typography variant="h6" component="h2" gutterBottom>
+          What type of project is this?
+        </Typography>
+        <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+          {chipOptionsType.map((option, index) => (
+            <Chip
+              key={index}
+              label={option}
+              onClick={() => handleChipClick("type", option)}
+              sx={{
+                margin: "5px",
+                backgroundColor:
+                  selectedType === option ? "#db4a41" : "default",
+                color: selectedType === option ? "#fff" : "default",
               }}
-              fullWidth
             />
-          </div>
+          ))}
+        </Box>
 
-          <div>
-            <Typography variant="h3" sx={{ fontFamily: "Formula Bold" }}>
-              Book a Meeting
-            </Typography>
-            <TextField
-              label="Select date and time for meeting"
-              type="datetime-local"
-              fullWidth
-              value={meetingDateTime}
-              onChange={(e) => setMeetingDateTime(e.target.value)}
-              sx={formStyle}
-              InputLabelProps={{
-                shrink: true,
+        <Typography variant="h6" component="h2" gutterBottom>
+          What is your budget range?
+        </Typography>
+        <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+          {chipOptionsBudget.map((option, index) => (
+            <Chip
+              key={index}
+              label={option}
+              onClick={() => handleChipClick("budget", option)}
+              sx={{
+                margin: "5px",
+                backgroundColor:
+                  selectedBudget === option ? "#db4a41" : "default",
+                color: selectedBudget === option ? "#fff" : "default",
               }}
             />
-          </div>
+          ))}
+        </Box>
 
-          <div>
-            <Typography variant="h3" sx={{ fontFamily: "Formula Bold" }}>
-              More About You...
-            </Typography>
-            <TextField
-              label="First Name"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              fullWidth
-              sx={formStyle}
-            />
-            <TextField
-              label="Last Name"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              fullWidth
-              sx={formStyle}
-            />
-            <TextField
-              label="Company Name"
-              name="companyName"
-              value={formData.companyName}
-              onChange={handleChange}
-              fullWidth
-              sx={formStyle}
-            />
-            <TextField
-              label="Phone Number"
-              name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              fullWidth
-              sx={formStyle}
-            />
-            {/* Additional fields */}
-            <TextField
-              label="Email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              fullWidth
-              sx={formStyle}
-            />
-            <TextField
-              label="Description"
-              name="description"
-              multiline
-              rows={4}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              fullWidth
-              sx={formStyle}
-            />
-            <TextField
-              label="How did you hear about us"
-              name="hearing"
-              value={hearing}
-              onChange={(e) => setHearing(e.target.value)}
-              fullWidth
-              sx={formStyle}
-              select
-            >
-              <MenuItem value="Social Media">Social Media</MenuItem>
-              <MenuItem value="Friend">From a friend</MenuItem>
-              <MenuItem value="Event">Saw us in an event</MenuItem>
-            </TextField>
-            {/* End additional fields */}
-          </div>
-
-          <button className="form-submit" type="submit">
-            Send
-          </button>
-        </form>
+        <button className="form-submit" type="submit">
+          Send
+        </button>
 
         {submitted && (
           <Box
