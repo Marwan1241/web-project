@@ -18,7 +18,14 @@ import EventPage from "./components/EventPage";
 import NotFound from "./components/NotFound";
 import Admin from "./components/admin-panel/Admin";
 import CareersFormPage from "./components/CareersFormPage";
-import SignUp from "./components/SignUp";
+import Login from "./components/SignUp";
+const express = require("express")
+const collection = require("./mongo")
+const cors = require("cors")
+const app = express()
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 
 //Scroll to top when navigating a new page
 function ScrollToTop() {
@@ -52,7 +59,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/iftar" element={<IftarForm />} />
           <Route path="/event/:eventId" element={<EventPage />} />
-          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/sign-up" element={<Login />} />
           <Route path="/admin/*" element={<Admin />} />
 
           <Route
@@ -67,5 +74,62 @@ function App() {
     </Router>
   );
 }
+app.get("/",cors(),(req,res)=>{
+
+})
+
+
+app.post("/",async(req,res)=>{
+    const{email,password}=req.body
+
+    try{
+        const check=await collection.findOne({email:email})
+
+        if(check){
+            res.json("exist")
+        }
+        else{
+            res.json("notexist")
+        }
+
+    }
+    catch(e){
+        res.json("fail")
+    }
+
+})
+
+
+
+app.post("/signup",async(req,res)=>{
+    const{email,password}=req.body
+
+    const data={
+        email:email,
+        password:password
+    }
+
+    try{
+        const check=await collection.findOne({email:email})
+
+        if(check){
+            res.json("exist")
+        }
+        else{
+            res.json("notexist")
+            await collection.insertMany([data])
+        }
+
+    }
+    catch(e){
+        res.json("fail")
+    }
+
+})
+
+app.listen(8000,()=>{
+    console.log("port connected");
+})
+
 
 export default App;

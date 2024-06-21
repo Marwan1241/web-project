@@ -1,19 +1,24 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-require("dotenv").config();
+const mongoose=require("mongoose")
+mongoose.connect("mongodb://0.0.0.0:27017/react-login-tut")
+.then(()=>{
+    console.log("mongodb connected");
+})
+.catch(()=>{
+    console.log('failed');
+})
 
-const userSchema = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-});
 
-userSchema.pre("save", async function (next) {
-  const user = this;
-  const hash = await bcrypt.hash(user.password, 10);
-  user.password = hash;
-  next();
-});
+const newSchema=new mongoose.Schema({
+    email:{
+        type:String,
+        required:true
+    },
+    password:{
+        type:String,
+        required:true
+    }
+})
 
-const User = mongoose.model("User", userSchema);
+const collection = mongoose.model("collection",newSchema)
 
-module.exports = User;
+module.exports=collection
