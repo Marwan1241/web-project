@@ -1,0 +1,13 @@
+{
+  "users": [
+    {
+      "id": "cb92",
+      "companyName": "Company",
+      "companyAddress": "address street 123",
+      "contactNumber": "01111977933",
+      "email": "email@gmail.com",
+      "username": "companyname",
+      "password": "namecompany"
+    }
+  ]
+}
