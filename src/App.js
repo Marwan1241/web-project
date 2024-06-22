@@ -21,6 +21,8 @@ import CareersFormPage from "./components/CareersFormPage";
 import SignUp from "./components/SignUp";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
+import CompanyProfile from "./components/CompanyProfile";
+import CompaniesList from "./components/CompaniesList";
 
 //Scroll to top when navigating a new page
 function ScrollToTop() {
@@ -58,6 +60,11 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/company-profile" element={<CompanyProfile />} />
+          <Route
+            path="/admin/dashboard/companies-list"
+            element={<CompaniesList />}
+          />
 
           <Route
             path="/careers-form/:positionTitle"
@@ -65,7 +72,7 @@ function App() {
           />
           <Route path="*" element={<NotFound />} />
         </Routes>
-        {!isInAdminSection() && <Leads />}
+        {/* {!isInAdminSection() && <Leads />} */}
         {!isInAdminSection() && <Footer />}
       </div>
     </Router>

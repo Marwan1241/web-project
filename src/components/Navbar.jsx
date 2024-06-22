@@ -84,22 +84,25 @@ export default function ButtonAppBar() {
           </Link>
 
           <Box>
-          {user ? (
-              <Link to="/logout">
-                <button className="btn btn-primary">Logout</button>
-              </Link>
+            {user ? (
+              <>
+                <Link to="/logout">
+                  <button className="btn btn-primary">Logout</button>
+                </Link>
+                <Link to="/company-profile">
+                  <button className="btn btn-primary">My Profile</button>
+                </Link>
+              </>
             ) : (
-              <div>
+              <>
                 <Link to="/login">
                   <button className="btn btn-primary">Login</button>
                 </Link>
                 <Link to="/signup">
                   <button className="btn btn-primary">Sign Up</button>
                 </Link>
-              </div>
+              </>
             )}
-
-            
 
             <Link to="/contact">
               <button className="btn btn-primary">START A PROJECT</button>
